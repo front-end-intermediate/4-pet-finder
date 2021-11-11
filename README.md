@@ -523,7 +523,7 @@ Note the select element. In regular HTML forms a
 <select></select>
 ```
 
-creates a drop-down list and the selected option is marked using `selected`. React selects use a [value attribute](https://reactjs.org/docs/forms.html#the-select-tag) on the select tag instead.
+creates a drop-down list and the [selected option is marked](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) using `selected`. React selects use a [value attribute](https://reactjs.org/docs/forms.html#the-select-tag) on the select tag instead.
 
 ## Implement Saving Pet Data Locally
 
@@ -652,7 +652,7 @@ We'll add an HTTP POST call to save the pet data and refresh the list. We'll als
 
 To help keep the amount of code in our index.js file managable, we'll use an separate file for our api calls.
 
-Create a new api.js file in src:
+Create a new `api.js` file in src:
 
 ```js
 export const listPets = () => {
@@ -752,7 +752,7 @@ const submit = (event) => {
 };
 ```
 
-Now that we have the erros in local state, we can display them in the form beneath the name and type fields (photos are optional so we need not display errors there):
+Now that we have the errors in local state, we can display them in the form beneath the name and type fields (photos are optional so we need not display errors there):
 
 ```js
 <input
@@ -875,7 +875,7 @@ const [currentPet, setCurrentPet] = useState(null);
 
 This piece of state can serve to
 
-- store the pet we clicked on and,
+- store the pet we clicked on, and,
 - control whether or not the modal is displayed.
 
 Note that the Pet component is expecting an onEdit prop that will run when the pet is clicked on.
