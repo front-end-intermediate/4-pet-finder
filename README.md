@@ -517,7 +517,13 @@ const NewPetModal = ({ onCancel }) => {
 export default NewPetModal;
 ```
 
-Note the select element. In regular HTML forms <select> creates a drop-down list and the selected option is marked using `selected`. React selects use a [value attribute](https://reactjs.org/docs/forms.html#the-select-tag) on the select tag instead.
+Note the select element. In regular HTML forms a
+
+```html
+<select></select>
+```
+
+creates a drop-down list and the selected option is marked using `selected`. React selects use a [value attribute](https://reactjs.org/docs/forms.html#the-select-tag) on the select tag instead.
 
 ## Implement Saving Pet Data Locally
 
