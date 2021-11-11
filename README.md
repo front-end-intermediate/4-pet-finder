@@ -453,6 +453,8 @@ Note: you can enter details but the submit button just refreshes the page (the d
 
 To be able to get the selected file out of an input we must to use a [ref](https://reactjs.org/docs/hooks-reference.html#useref) because file inputs can't be [controlled inputs](https://reactjs.org/docs/forms.html). File uploads must be [uncontrolled inputs](https://reactjs.org/docs/uncontrolled-components.html).
 
+Here is a simple [introduction to React's useRef hook](https://medium.com/technofunnel/react-uncontrolled-elements-with-useref-hooks-9c5873476c6f).
+
 Compare React's implementation of a file upload with [standard HTML](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file) file uploads on MDN.
 
 In NewPetModal - import useRef and set up state.
