@@ -2,14 +2,16 @@
 
 ## Starter
 
-This is a CRAPP project using a pre-made [JSON Server](https://www.npmjs.com/package/json-server) for the backend.
+This is a CRApp (Create React App) project using [JSON Server](https://www.npmjs.com/package/json-server) for the backend.
 
 ```sh
 npm i
-npm i json-server
+npm i json-server@0.17.4
 node server.js
 npm run start // NB in a separate terminal tab
 ```
+
+(Note: we use the last version of json-server before the release of version 1-alpha due to pre-release bugs.)
 
 Test the backend endpoints:
 
@@ -20,6 +22,14 @@ Test the backend endpoints:
 Test the frontend endpoint:
 
 - http://localhost:3000/
+
+```js
+// import ReactDOM from "react-dom";
+...
+const container = document.getElementById("app");
+const root = createRoot(container);
+root.render(<App />);
+```
 
 ## Fetch a List of Data with useEffect and Promises
 
@@ -33,8 +43,8 @@ In index.js:
 - calling setPets is going to trigger a rerender, and we should see our stringified data
 
 ```js
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
+import { useEffect, useState } from "react";
+import { createRoot } from "react-dom/client";
 import "./index.css";
 
 const App = () => {
@@ -55,16 +65,17 @@ const App = () => {
   );
 };
 
-ReactDOM.render(<App />, document.querySelector("#root"));
+const container = document.getElementById("app");
+const root = createRoot(container);
+root.render(<App />);
 ```
 
 ## Asnyc Await
 
-`async/await` is a newer method for working with promises. If you want to use async/await with useEffect, you need to write an async function and put that _inside_ useEffect function. Do not make the useEffect function itself async.
+`async/await` is a newer method for working with promises - common in both vanilla JavaScript and React apps. If you want to use async/await with useEffect, you need to write an async function and put that _inside_ useEffect function (i.e. do not make the useEffect function itself async).
 
 - create a function inside the useEffect and mark it as `async` - `async function getData() {`
 - fetch returns a promise, we can `await` that promise - `const res = await fetch("http://localhost:3001/pets");`
-- this causes the code to pause at this line until the fetch returns
 - create a variable called pets and `await` res.json() - `const pets = await res.json();`
 - call setPets with the array of pets - `setPets(pets);`
 
@@ -163,7 +174,7 @@ return (
 
 One problem with our loading indicator is that if fetch or the JSON parsing fails, it's going to throw an error and loading will never be set to false.
 
-We'll wrap it in a `try catch` block so if an error occurs, we catch it and set loading to false in the catch block.
+With async/await it is common to wrap the function in a `try catch` block so if an error occurs, we catch it (and set loading to false in the catch block).
 
 ```js
 useEffect(() => {
