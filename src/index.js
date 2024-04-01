@@ -1,25 +1,28 @@
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
+import Modal from "react-modal";
 import { Pet } from "./Pet";
+import NewPetModal from "./NewPetModal";
+import { listPets, createPet } from "./api";
 import "./index.css";
 
 const App = () => {
   const [pets, setPets] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [isNewPetOpen, setNewPetOpen] = useState(false);
+
+  const addPet = async (pet) => {
+    return createPet(pet).then((newPet) => {
+      setPets([...pets, newPet]);
+      setNewPetOpen(false);
+    });
+  };
 
   useEffect(() => {
-    async function getData() {
-      setLoading(true);
-      try {
-        const res = await fetch("http://localhost:3001/pets");
-        const pets = await res.json();
-        setPets(pets);
-        setLoading(false);
-      } catch (e) {
-        setLoading(false);
-      }
-    }
-    getData();
+    setLoading(true);
+    listPets()
+      .then((pets) => setPets(pets))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -36,14 +39,25 @@ const App = () => {
               </li>
             ))}
           </ul>
-          <button>Add a Pet</button>
+          <button onClick={() => setNewPetOpen(true)}>Add a Pet</button>
         </>
+      )}
+      {isNewPetOpen && (
+        <NewPetModal
+          onSave={addPet}
+          // isOpen={isNewPetOpen}
+          onCancel={() => setNewPetOpen(false)}
+        />
       )}
     </main>
   );
 };
 
 const container = document.getElementById("app");
+Modal.setAppElement(container);
 const root = createRoot(container);
 root.render(<App />);
-// ReactDOM.render(<App />, document.querySelector("#root"));
+
+// const container = document.getElementById("app");
+// Modal.setAppElement(container);
+// ReactDOM.render(<App />, el);

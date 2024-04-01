@@ -255,9 +255,7 @@ ReactDOM.render(<App />, document.querySelector("#root"));
 ## Elaborate on the Pets Component
 
 ```js
-import React from "react";
-
-const Pet = ({ pet, onEdit, onRemove }) => {
+export const Pet = ({ pet, onEdit, onRemove }) => {
   return (
     <div className="pet">
       {pet.photo ? (
@@ -278,15 +276,11 @@ const Pet = ({ pet, onEdit, onRemove }) => {
     </div>
   );
 };
-
-export default Pet;
 ```
 
-We are already using the pet prop - `{ pet, onEdit, onRemove }` - but onEdit and onRemove are for functions that we will write later.
+We are already using the pet prop - `{ pet, onEdit, onRemove }` - onEdit and onRemove are for functions that we will write later.
 
-Note the default export. Re-import in index.js as a default (not named) export: `import Pet from "./Pet";`
-
-## Display a Modal Dialog Using react-modal
+## Using React Utilities: react-modal
 
 When we click the Add a Pet button, we'll open a modal with a form that will let the user create a new pet.
 
@@ -354,9 +348,10 @@ Note the [React Modal](https://www.npmjs.com/package/react-modal) error in the c
 or:
 
 ```js
-const el = document.querySelector("#root");
-Modal.setAppElement(el);
-ReactDOM.render(<App />, el);
+const container = document.getElementById("app");
+Modal.setAppElement(container);
+const root = createRoot(container);
+root.render(<App />);
 ```
 
 ## Create a New Pet Form
@@ -417,7 +412,7 @@ export default NewPetModal;
 Add the form and state to NewPetModal:
 
 ```js
-import React, { useState } from "react";
+import { useState } from "react";
 import Modal from "react-modal";
 
 const NewPetModal = ({ onCancel }) => {
