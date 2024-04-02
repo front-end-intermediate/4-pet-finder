@@ -25,8 +25,9 @@ Test the frontend endpoint:
 
 ```js
 // import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 ...
-const container = document.getElementById("app");
+const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<App />);
 ```
@@ -40,7 +41,7 @@ In index.js:
 - import the useEffect and useState hooks from React - `import React, { useEffect, useState } from "react";`
 - initialize our pets state to an empty array - `const [pets, setPets] = useState([]);`
 - useEffect runs after our component renders
-- calling setPets is going to trigger a rerender, and we should see our stringified data
+- calling setPets is going to trigger a re-render, and we should see our stringified data
 
 ```js
 import { useEffect, useState } from "react";
@@ -65,7 +66,7 @@ const App = () => {
   );
 };
 
-const container = document.getElementById("app");
+const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<App />);
 ```
@@ -90,11 +91,9 @@ useEffect(() => {
 }, []);
 ```
 
-## Create a Pet Component
+Create a Pet Component in a new file called Pet.js:
 
 ```js
-import React from "react";
-
 export const Pet = ({ pet }) => {
   return (
     <div>
@@ -193,7 +192,7 @@ useEffect(() => {
 }, []);
 ```
 
-To see how this might work for promises, comment out the async-await version and use a promise version.
+<!-- To see how this might work for promises, comment out the async-await version and use a promise version.
 
 ```js
 import React, { useState, useEffect } from "react";
@@ -250,9 +249,9 @@ const App = () => {
 };
 
 ReactDOM.render(<App />, document.querySelector("#root"));
-```
+``` -->
 
-## Elaborate on the Pets Component
+## Elaborate on the Pet Component
 
 ```js
 export const Pet = ({ pet, onEdit, onRemove }) => {
@@ -321,7 +320,7 @@ When we click the add a pet button we want to toggle that state to true. Add an 
 </>
 ```
 
-Note: instead of creating a standalone function we create a function in the curly braces. This is just a stylistic choice. I.e. - we _don't_ do this:
+<!-- Note: instead of creating a standalone function we create a function in the curly braces. This is just a stylistic choice. I.e. - we _don't_ do this:
 
 ```js
 function closeModal() {
@@ -329,7 +328,7 @@ function closeModal() {
 }
 ...
 <Modal isOpen={isNewPetOpen} onRequestClose={closeModal}>
-```
+``` -->
 
 Now when we click the button the modal shows up, but we have no way to close it.
 
@@ -348,7 +347,7 @@ Note the [React Modal](https://www.npmjs.com/package/react-modal) error in the c
 or:
 
 ```js
-const container = document.getElementById("app");
+const container = document.getElementById("root");
 Modal.setAppElement(container);
 const root = createRoot(container);
 root.render(<App />);
@@ -361,7 +360,6 @@ We need a form to input the pet's data inside the modal dialog.
 Create `NewPetModal.js` in `src`:
 
 ```js
-import React from "react";
 import Modal from "react-modal";
 
 const NewPetModal = () => {
@@ -374,7 +372,7 @@ const NewPetModal = () => {
 export default NewPetModal;
 ```
 
-Import and use it in `index.js`:
+Import and compose it in `index.js`:
 
 ```js
 import NewPetModal from './NewPetModal';
@@ -396,7 +394,6 @@ We are using the [Logical AND](https://developer.mozilla.org/en-US/docs/Web/Java
 we can now destructure the onCancel prop and use it in our modal:
 
 ```js
-import React from "react";
 import Modal from "react-modal";
 
 const NewPetModal = ({ onCancel }) => {
@@ -676,7 +673,7 @@ export const createPet = (pet) => {
 };
 ```
 
-index.js:
+In index.js:
 
 ```js
 import { listPets, createPet } from './api';
@@ -689,7 +686,7 @@ useEffect(() => {
 }, []);
 ```
 
-Add error handling to the api code:
+Add error handling to api.js:
 
 ```js
 const handleErrors = (res) => {
@@ -731,10 +728,10 @@ const addPet = async (pet) => {
 
 Testing the add pet form now saves the pet to the db.
 
-Note: possible server error - cannot find module encodings.
+<!-- Note: possible server error - cannot find module encodings.
 
 - Stop the server and npm install json-server
-- restart the server
+- restart the server -->
 
 Test submitting the form with a blank pet and note the server is returning useful errors to the browser's console:
 
