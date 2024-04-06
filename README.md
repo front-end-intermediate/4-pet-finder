@@ -2,6 +2,8 @@
 
 ## Homework
 
+Move the `App` component to its own file and reimport it back into `index.js`.
+
 Listen to this episode of [Syntax](https://syntax.fm/show/751/ui-components-shadcn-tailwind-ui-headless-react-aria-radix-ui), select a modal from one of the UI libraries mentioned and implement it in the project replacing the React Modal currently in use.
 
 ## Starter
@@ -463,13 +465,15 @@ Note: you can enter details but the submit button just refreshes the page (the d
 
 In order to [upload files](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file) we use `<input type='file' />`. The selected files' are returned by the element's HTMLInputElement.files property, which is a FileList object containing a list of File objects. The FileList behaves like an array, so you can check its length property to get the number of selected files.
 
-To be able to get the selected file out of an input we must to use a [ref](https://reactjs.org/docs/hooks-reference.html#useref) because file inputs can't be [controlled inputs](https://reactjs.org/docs/forms.html). File uploads must be [uncontrolled inputs](https://reactjs.org/docs/uncontrolled-components.html).
+To be able to get the selected file out of an input we must to use a [ref](https://react.dev/reference/react/useRef) because file inputs can't be [controlled inputs](https://reactjs.org/docs/forms.html). File uploads must be [uncontrolled inputs](https://reactjs.org/docs/uncontrolled-components.html).
+
+`useRef` returns an object with a single `current` property.
 
 Here is a simple [introduction to React's useRef hook](https://medium.com/technofunnel/react-uncontrolled-elements-with-useref-hooks-9c5873476c6f).
 
 Compare React's implementation of a file upload with [standard HTML](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file) file uploads on MDN.
 
-In NewPetModal - import useRef and set up state.
+In NewPetModal - import `useRef` and set up state.
 
 ```js
 import React, { useState, useRef } from "react";
@@ -529,13 +533,21 @@ const NewPetModal = ({ onCancel }) => {
 export default NewPetModal;
 ```
 
-Note the select element. In regular HTML forms a
+Note the select element. In standard HTML forms a
 
 ```html
 <select></select>
 ```
 
-creates a drop-down list and the [selected option is marked](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) using `selected`. React selects use a [value attribute](https://reactjs.org/docs/forms.html#the-select-tag) on the select tag instead.
+creates a drop-down list and the [selected option is marked](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) using `selected`.
+
+React selects use a [value attribute](https://reactjs.org/docs/forms.html#the-select-tag) on the select tag instead.
+
+Note also the [`FileReader`API](https://developer.mozilla.org/en-US/docs/Web/API/FileReader). This lets web apps read the contents of files stored on the user's computer.
+
+The [readAsDataURL method](https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL) of the `FileReader` API starts reading the contents of the specified blob. Once finished, the result attribute contains a [`data: URL`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs) representing the file's data.
+
+We are using the method above for testing. Normally (and as you shall see in the next exercise) you would upload the file to a server.
 
 ## Implement Saving Pet Data Locally
 

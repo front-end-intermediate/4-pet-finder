@@ -15,7 +15,6 @@ export const createPet = (pet) => {
 };
 
 export const updatePet = (pet) => {
-  console.log(pet);
   return fetch(`http://localhost:3001/pets/${pet.id}`, {
     method: "PUT",
     headers: {
