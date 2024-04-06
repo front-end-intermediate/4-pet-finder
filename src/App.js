@@ -57,10 +57,7 @@ export const App = () => {
                 <Pet
                   onRemove={() => removePet(pet)}
                   pet={pet}
-                  onEdit={() => {
-                    console.log("pet", pet);
-                    setCurrentPet(pet);
-                  }}
+                  onEdit={() => setCurrentPet(pet)}
                 />
               </li>
             ))}
@@ -69,11 +66,7 @@ export const App = () => {
         </>
       )}
       {isNewPetOpen && (
-        <NewPetModal
-          onSave={addPet}
-          // isOpen={isNewPetOpen}
-          onCancel={() => setNewPetOpen(false)}
-        />
+        <NewPetModal onSave={addPet} onCancel={() => setNewPetOpen(false)} />
       )}
 
       {currentPet && (
