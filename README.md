@@ -8,7 +8,7 @@ Listen to this episode of [Syntax](https://syntax.fm/show/751/ui-components-shad
 
 ## Starter
 
-This is a CRApp (Create React App) project using [JSON Server](https://www.npmjs.com/package/json-server) for the backend.
+This is a CRApp (Create React App) project using \[JSON Server\](https://www.npmjs.com/package/json-server) for the backend.
 
 ```sh
 npm i
@@ -44,7 +44,7 @@ Use the useEffect hook to kick off the data fetch to the json-server backend, th
 In index.js:
 
 - import the useEffect and useState hooks from React - `import React, { useEffect, useState } from "react";`
-- initialize our pets state to an empty array - `const [pets, setPets] = useState([]);`
+- initialize our pets state to an empty array - `const \[pets, setPets\] = useState(\[\]);`
 - useEffect runs after our component renders
 - calling setPets is going to trigger a rerender, and we should see our stringified data
 
@@ -54,13 +54,13 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 
 const App = () => {
-  const [pets, setPets] = useState([]);
+  const \[pets, setPets\] = useState(\[\]);
 
   useEffect(() => {
     fetch("http://localhost:3001/pets")
       .then((res) => res.json())
       .then((pets) => setPets(pets));
-  }, []);
+  }, \[\]);
 
   return (
     <main>
@@ -93,7 +93,7 @@ useEffect(() => {
     setPets(pets);
   }
   getData();
-}, []);
+}, \[\]);
 ```
 
 ## Create a Pet Component
@@ -137,7 +137,7 @@ We'll add a loading indicator.
 
 Create a new piece of state called loading initialized to value of false
 
-`const [isLoading, setLoading] = useState(false);`
+`const \[isLoading, setLoading\] = useState(false);`
 
 And set loading to true before we start fetching data, and to false after we're done:
 
@@ -151,7 +151,7 @@ useEffect(() => {
     setLoading(false);
   }
   getData();
-}, []);
+}, \[\]);
 ```
 
 Use the loading state in the return:
@@ -196,7 +196,7 @@ useEffect(() => {
     }
   }
   getData();
-}, []);
+}, \[\]);
 ```
 
 To see how this might work for promises, comment out the async-await version and use a promise version.
@@ -208,8 +208,8 @@ import { Pet } from "./Pet";
 import "./index.css";
 
 const App = () => {
-  const [pets, setPets] = useState([]);
-  const [isLoading, setLoading] = useState(false);
+  const \[pets, setPets\] = useState(\[\]);
+  const \[isLoading, setLoading\] = useState(false);
 
   useEffect(() => {
     // async function getData() {
@@ -232,7 +232,7 @@ const App = () => {
       .then((res) => res.json())
       .then((pets) => setPets(pets))
       .finally(() => setLoading(false));
-  }, []);
+  }, \[\]);
 
   return (
     <main>
@@ -309,7 +309,7 @@ The modal requires a prop to tell it whether to display or not.
 We'll add state in index.js:
 
 ```js
-const [isNewPetOpen, setNewPetOpen] = useState(false);
+const \[isNewPetOpen, setNewPetOpen\] = useState(false);
 ```
 
 When we click the add a pet button we want to toggle that state to true. Add an onClick event to the button and pass a function to call setNewPetOpen to true.
@@ -347,7 +347,7 @@ Pass another prop to the modal called onRequestClose with a function that will c
 </Modal>
 ```
 
-Note the [React Modal](https://www.npmjs.com/package/react-modal) error in the console.
+Note the \[React Modal\](https://www.npmjs.com/package/react-modal) error in the console.
 
 `Modal.setAppElement("#root" );`
 
@@ -397,7 +397,7 @@ import NewPetModal from './NewPetModal';
 </main>
 ```
 
-We are using the [Logical AND](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND) operator here. This is often used instead of a ternary expression when there is only one result (a boolean true or false).
+We are using the \[Logical AND\](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND) operator here. This is often used instead of a ternary expression when there is only one result (a boolean true or false).
 
 we can now destructure the onCancel prop and use it in our modal:
 
@@ -422,8 +422,8 @@ import { useState } from "react";
 import Modal from "react-modal";
 
 const NewPetModal = ({ onCancel }) => {
-  const [name, setName] = useState("");
-  const [kind, setKind] = useState("");
+  const \[name, setName\] = useState("");
+  const \[kind, setKind\] = useState("");
 
   return (
     <Modal isOpen={true} onRequestClose={onCancel}>
@@ -469,9 +469,9 @@ To be able to get the selected file out of an input we must to use a [ref](https
 
 `useRef` returns an object with a single `current` property.
 
-Here is a simple [introduction to React's useRef hook](https://medium.com/technofunnel/react-uncontrolled-elements-with-useref-hooks-9c5873476c6f).
+Here is a simple \[introduction to React's useRef hook\](https://medium.com/technofunnel/react-uncontrolled-elements-with-useref-hooks-9c5873476c6f).
 
-Compare React's implementation of a file upload with [standard HTML](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file) file uploads on MDN.
+Compare React's implementation of a file upload with \[standard HTML\](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file) file uploads on MDN.
 
 In NewPetModal - import `useRef` and set up state.
 
@@ -480,13 +480,13 @@ import React, { useState, useRef } from "react";
 import Modal from "react-modal";
 
 const NewPetModal = ({ onCancel }) => {
-  const [name, setName] = useState("");
-  const [kind, setKind] = useState("");
-  const [photo, setPhoto] = useState(null);
+  const \[name, setName\] = useState("");
+  const \[kind, setKind\] = useState("");
+  const \[photo, setPhoto\] = useState(null);
   const photoInput = useRef();
 
   const updatePhoto = () => {
-    const file = photoInput.current.files && photoInput.current.files[0];
+    const file = photoInput.current.files && photoInput.current.files\[0\];
 
     if (file) {
       const reader = new FileReader();
@@ -575,13 +575,13 @@ import React, { useState, useRef } from "react";
 import Modal from "react-modal";
 
 const NewPetModal = ({ onCancel, onSave }) => {
-  const [name, setName] = useState("");
-  const [kind, setKind] = useState("");
-  const [photo, setPhoto] = useState(null);
+  const \[name, setName\] = useState("");
+  const \[kind, setKind\] = useState("");
+  const \[photo, setPhoto\] = useState(null);
   const photoInput = useRef();
 
   const updatePhoto = () => {
-    const file = photoInput.current.files && photoInput.current.files[0];
+    const file = photoInput.current.files && photoInput.current.files\[0\];
 
     if (file) {
       const reader = new FileReader();
@@ -639,7 +639,7 @@ Create addPet in index.js
 
 ```js
 const addPet = async ({ name, kind, photo }) => {
-  setPets([
+  setPets(\[
     ...pets,
     {
       id: Math.random(),
@@ -647,7 +647,7 @@ const addPet = async ({ name, kind, photo }) => {
       kind,
       photo,
     },
-  ]);
+  \]);
   setNewPetOpen(false);
 };
 ```
@@ -704,7 +704,7 @@ useEffect(() => {
   listPets()
     .then((pets) => setPets(pets))
     .finally(() => setLoading(false));
-}, []);
+}, \[\]);
 ```
 
 Add error handling to the api code:
@@ -741,7 +741,7 @@ Edit the addPet function in index.js to use the exported createPet function in o
 ```js
 const addPet = async (pet) => {
   return createPet(pet).then((newPet) => {
-    setPets([...pets, newPet]);
+    setPets(\[...pets, newPet\]);
     setNewPetOpen(false);
   });
 };
@@ -761,7 +761,7 @@ Test submitting the form with a blank pet and note the server is returning usefu
 We'll catch and display the errors in NewPetModal.js
 
 ```js
-const [errors, setErrors] = useState(null);
+const \[errors, setErrors\] = useState(null);
 ...
 const submit = (event) => {
   event.preventDefault();
@@ -835,7 +835,7 @@ Now we'll disable the form while its being submitted.
 In NewPetModal:
 
 ```js
-const [saving, setSaving] = useState(false);
+const \[saving, setSaving\] = useState(false);
 ...
 const submit = event => {
     event.preventDefault();
@@ -896,7 +896,7 @@ Add a new piece of state in App (index.js) that will store the current pet:
 <!-- // here -->
 
 ```js
-const [currentPet, setCurrentPet] = useState(null);
+const \[currentPet, setCurrentPet\] = useState(null);
 ```
 
 This piece of state can serve to
@@ -927,9 +927,9 @@ The form is going to be very similar to NewPetModal, but there's a couple differ
 We want to initialize the name, kind and photo states to whatever pet is passed in.
 
 ```js
-const [name, setName] = useState(pet.name);
-const [kind, setKind] = useState(pet.kind);
-const [photo, setPhoto] = useState(pet.photo);
+const \[name, setName\] = useState(pet.name);
+const \[kind, setKind\] = useState(pet.kind);
+const \[photo, setPhoto\] = useState(pet.photo);
 ```
 
 And accept a pet prop `const EditPetModal = ({ pet, onCancel, onSave }) =>` and edit the submit function to spread the pet's values into the object before adding any changed values. Without this we would not get the pet's id (which we are not changing).
@@ -940,16 +940,16 @@ import Modal from "react-modal";
 
 const EditPetModal = ({ pet, onCancel, onSave }) => {
   // NEW
-  const [name, setName] = useState(pet.name);
-  const [kind, setKind] = useState(pet.kind);
-  const [photo, setPhoto] = useState(pet.photo);
+  const \[name, setName\] = useState(pet.name);
+  const \[kind, setKind\] = useState(pet.kind);
+  const \[photo, setPhoto\] = useState(pet.photo);
 
-  const [errors, setErrors] = useState(null);
-  const [saving, setSaving] = useState(false);
+  const \[errors, setErrors\] = useState(null);
+  const \[saving, setSaving\] = useState(false);
   const photoInput = useRef();
 
   const updatePhoto = () => {
-    const file = photoInput.current.files && photoInput.current.files[0];
+    const file = photoInput.current.files && photoInput.current.files\[0\];
 
     if (file) {
       const reader = new FileReader();
@@ -1213,9 +1213,9 @@ const PetForm = ({ pet, onSave, onCancel }) => {
     kind: '',
     photo: null
   };
-  const [name, setName] = useState(initialPet.name);
-  const [kind, setKind] = useState(initialPet.kind);
-  const [photo, setPhoto] = useState(initialPet.photo);
+  const \[name, setName\] = useState(initialPet.name);
+  const \[kind, setKind\] = useState(initialPet.kind);
+  const \[photo, setPhoto\] = useState(initialPet.photo);
 ```
 
 Add the react hooks and the necessary updatePhoto and submit functions:
@@ -1229,15 +1229,15 @@ const PetForm = ({ pet, onSave, onCancel }) => {
     kind: "",
     photo: null,
   };
-  const [name, setName] = useState(initialPet.name);
-  const [kind, setKind] = useState(initialPet.kind);
-  const [photo, setPhoto] = useState(initialPet.photo);
-  const [errors, setErrors] = useState(null);
-  const [saving, setSaving] = useState(false);
+  const \[name, setName\] = useState(initialPet.name);
+  const \[kind, setKind\] = useState(initialPet.kind);
+  const \[photo, setPhoto\] = useState(initialPet.photo);
+  const \[errors, setErrors\] = useState(null);
+  const \[saving, setSaving\] = useState(false);
   const photoInput = useRef();
 
   const updatePhoto = () => {
-    const file = photoInput.current.files && photoInput.current.files[0];
+    const file = photoInput.current.files && photoInput.current.files\[0\];
 
     if (file) {
       const reader = new FileReader();
@@ -1352,15 +1352,15 @@ const PetForm = ({ pet, onSave, onCancel }) => {
     kind: "",
     photo: null,
   };
-  const [name, setName] = useState(initialPet.name);
-  const [kind, setKind] = useState(initialPet.kind);
-  const [photo, setPhoto] = useState(initialPet.photo);
-  const [errors, setErrors] = useState(null);
-  const [saving, setSaving] = useState(false);
+  const \[name, setName\] = useState(initialPet.name);
+  const \[kind, setKind\] = useState(initialPet.kind);
+  const \[photo, setPhoto\] = useState(initialPet.photo);
+  const \[errors, setErrors\] = useState(null);
+  const \[saving, setSaving\] = useState(false);
   const photoInput = useRef();
 
   const updatePhoto = () => {
-    const file = photoInput.current.files && photoInput.current.files[0];
+    const file = photoInput.current.files && photoInput.current.files\[0\];
 
     if (file) {
       const reader = new FileReader();
@@ -1425,3 +1425,4 @@ export default PetForm;
 ## Notes
 
 Use/demo Postman or Insomnia?
+](.)
