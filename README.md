@@ -1,5 +1,11 @@
 # React and CRUD APIs
 
+## Homework
+
+Move the `App` component to its own file and reimport it back into `index.js`.
+
+Listen to this episode of [Syntax](https://syntax.fm/show/751/ui-components-shadcn-tailwind-ui-headless-react-aria-radix-ui), select a modal from one of the UI libraries mentioned and implement it in the project replacing the React Modal currently in use.
+
 ## Starter
 
 This is a CRApp (Create React App) project using [JSON Server](https://www.npmjs.com/package/json-server) for the backend.
@@ -25,9 +31,8 @@ Test the frontend endpoint:
 
 ```js
 // import ReactDOM from "react-dom";
-import { createRoot } from "react-dom/client";
 ...
-const container = document.getElementById("root");
+const container = document.getElementById("app");
 const root = createRoot(container);
 root.render(<App />);
 ```
@@ -41,7 +46,7 @@ In index.js:
 - import the useEffect and useState hooks from React - `import React, { useEffect, useState } from "react";`
 - initialize our pets state to an empty array - `const [pets, setPets] = useState([]);`
 - useEffect runs after our component renders
-- calling setPets is going to trigger a re-render, and we should see our stringified data
+- calling setPets is going to trigger a rerender, and we should see our stringified data
 
 ```js
 import { useEffect, useState } from "react";
@@ -66,7 +71,7 @@ const App = () => {
   );
 };
 
-const container = document.getElementById("root");
+const container = document.getElementById("app");
 const root = createRoot(container);
 root.render(<App />);
 ```
@@ -91,9 +96,11 @@ useEffect(() => {
 }, []);
 ```
 
-Create a Pet Component in a new file called Pet.js:
+## Create a Pet Component
 
 ```js
+import React from "react";
+
 export const Pet = ({ pet }) => {
   return (
     <div>
@@ -192,7 +199,7 @@ useEffect(() => {
 }, []);
 ```
 
-<!-- To see how this might work for promises, comment out the async-await version and use a promise version.
+To see how this might work for promises, comment out the async-await version and use a promise version.
 
 ```js
 import React, { useState, useEffect } from "react";
@@ -249,9 +256,9 @@ const App = () => {
 };
 
 ReactDOM.render(<App />, document.querySelector("#root"));
-``` -->
+```
 
-## Elaborate on the Pet Component
+## Elaborate on the Pets Component
 
 ```js
 export const Pet = ({ pet, onEdit, onRemove }) => {
@@ -281,14 +288,14 @@ We are already using the pet prop - `{ pet, onEdit, onRemove }` - onEdit and onR
 
 ## Using React Utilities: react-modal
 
-When we click the Add a Pet button, we'll open a modal with a form that will let the user create a new pet.
+When we click the Add a Pet button, we'll open a [React modal](https://www.npmjs.com/package/react-modal) with a form that will let the user create a new pet.
 
 ```sh
 npm i react-modal
 ```
 
 - import it as Modal in index.js: `import Modal from 'react-modal';`
-- add it to the bottom of the main element:
+- add it before the close of the main element in `index.js`:
 
 ```js
 <main>
@@ -297,7 +304,7 @@ npm i react-modal
 </main>
 ```
 
-The modal requires a prop called isOpen to tell it whether to display or not.
+The modal requires a prop to tell it whether to display or not.
 
 We'll add state in index.js:
 
@@ -320,7 +327,7 @@ When we click the add a pet button we want to toggle that state to true. Add an 
 </>
 ```
 
-<!-- Note: instead of creating a standalone function we create a function in the curly braces. This is just a stylistic choice. I.e. - we _don't_ do this:
+Note: instead of creating a standalone function we create a function in the curly braces. This is just a stylistic choice. I.e. - we _don't_ do this:
 
 ```js
 function closeModal() {
@@ -328,7 +335,7 @@ function closeModal() {
 }
 ...
 <Modal isOpen={isNewPetOpen} onRequestClose={closeModal}>
-``` -->
+```
 
 Now when we click the button the modal shows up, but we have no way to close it.
 
@@ -347,7 +354,7 @@ Note the [React Modal](https://www.npmjs.com/package/react-modal) error in the c
 or:
 
 ```js
-const container = document.getElementById("root");
+const container = document.getElementById("app");
 Modal.setAppElement(container);
 const root = createRoot(container);
 root.render(<App />);
@@ -360,6 +367,7 @@ We need a form to input the pet's data inside the modal dialog.
 Create `NewPetModal.js` in `src`:
 
 ```js
+import React from "react";
 import Modal from "react-modal";
 
 const NewPetModal = () => {
@@ -372,7 +380,7 @@ const NewPetModal = () => {
 export default NewPetModal;
 ```
 
-Import and compose it in `index.js`:
+Import and use it in `index.js`:
 
 ```js
 import NewPetModal from './NewPetModal';
@@ -394,6 +402,7 @@ We are using the [Logical AND](https://developer.mozilla.org/en-US/docs/Web/Java
 we can now destructure the onCancel prop and use it in our modal:
 
 ```js
+import React from "react";
 import Modal from "react-modal";
 
 const NewPetModal = ({ onCancel }) => {
@@ -454,13 +463,17 @@ Note: you can enter details but the submit button just refreshes the page (the d
 
 ## Add a Photo
 
-To be able to get the selected file out of an input we must to use a [ref](https://reactjs.org/docs/hooks-reference.html#useref) because file inputs can't be [controlled inputs](https://reactjs.org/docs/forms.html). File uploads must be [uncontrolled inputs](https://reactjs.org/docs/uncontrolled-components.html).
+In order to [upload files](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file) we use `<input type='file' />`. The selected files' are returned by the element's HTMLInputElement.files property, which is a FileList object containing a list of File objects. The FileList behaves like an array, so you can check its length property to get the number of selected files.
+
+To be able to get the selected file out of an input we must to use a [ref](https://react.dev/reference/react/useRef) because file inputs can't be [controlled inputs](https://reactjs.org/docs/forms.html). File uploads must be [uncontrolled inputs](https://reactjs.org/docs/uncontrolled-components.html).
+
+`useRef` returns an object with a single `current` property.
 
 Here is a simple [introduction to React's useRef hook](https://medium.com/technofunnel/react-uncontrolled-elements-with-useref-hooks-9c5873476c6f).
 
 Compare React's implementation of a file upload with [standard HTML](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file) file uploads on MDN.
 
-In NewPetModal - import useRef and set up state.
+In NewPetModal - import `useRef` and set up state.
 
 ```js
 import React, { useState, useRef } from "react";
@@ -520,13 +533,21 @@ const NewPetModal = ({ onCancel }) => {
 export default NewPetModal;
 ```
 
-Note the select element. In regular HTML forms a
+Note the select element. In standard HTML forms a
 
 ```html
 <select></select>
 ```
 
-creates a drop-down list and the [selected option is marked](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) using `selected`. React selects use a [value attribute](https://reactjs.org/docs/forms.html#the-select-tag) on the select tag instead.
+creates a drop-down list and the [selected option is marked](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) using `selected`.
+
+React selects use a [value attribute](https://reactjs.org/docs/forms.html#the-select-tag) on the select tag instead.
+
+Note also the [`FileReader`API](https://developer.mozilla.org/en-US/docs/Web/API/FileReader). This lets web apps read the contents of files stored on the user's computer.
+
+The [readAsDataURL method](https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL) of the `FileReader` API starts reading the contents of the specified blob. Once finished, the result attribute contains a [`data: URL`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs) representing the file's data.
+
+We are using the method above for testing. Normally (and as you shall see in the next exercise) you would upload the file to a server.
 
 ## Implement Saving Pet Data Locally
 
@@ -673,7 +694,7 @@ export const createPet = (pet) => {
 };
 ```
 
-In index.js:
+index.js:
 
 ```js
 import { listPets, createPet } from './api';
@@ -686,7 +707,7 @@ useEffect(() => {
 }, []);
 ```
 
-Add error handling to api.js:
+Add error handling to the api code:
 
 ```js
 const handleErrors = (res) => {
@@ -728,10 +749,10 @@ const addPet = async (pet) => {
 
 Testing the add pet form now saves the pet to the db.
 
-<!-- Note: possible server error - cannot find module encodings.
+Note: possible server error - cannot find module encodings.
 
 - Stop the server and npm install json-server
-- restart the server -->
+- restart the server
 
 Test submitting the form with a blank pet and note the server is returning useful errors to the browser's console:
 
@@ -872,6 +893,8 @@ We're going to need:
 
 Add a new piece of state in App (index.js) that will store the current pet:
 
+<!-- // here -->
+
 ```js
 const [currentPet, setCurrentPet] = useState(null);
 ```
@@ -912,7 +935,7 @@ const [photo, setPhoto] = useState(pet.photo);
 And accept a pet prop `const EditPetModal = ({ pet, onCancel, onSave }) =>` and edit the submit function to spread the pet's values into the object before adding any changed values. Without this we would not get the pet's id (which we are not changing).
 
 ```js
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import Modal from "react-modal";
 
 const EditPetModal = ({ pet, onCancel, onSave }) => {
@@ -1027,7 +1050,7 @@ const savePet = async (pet) => {
 
 Test by clicking on a pet, changing a value and examining the console.
 
-We'll need an update function in our api.js:
+We'll need an `update` function in our api.js:
 
 `import { listPets, createPet, updatePet } from './api';`
 
@@ -1087,7 +1110,7 @@ import { listPets, createPet, updatePet, deletePet } from "./api";
 
 And wire up a handler for the home button to call our delete pet API.
 
-The Pet component should be passed an onRemove prop: `const Pet = ({ pet, onEdit, onRemove }) => {`
+The Pet component should be passed an `onRemove` prop: `const Pet = ({ pet, onEdit, onRemove }) => {`
 
 In index, we pass a prop to Pet called onRemove.
 
@@ -1136,15 +1159,13 @@ The "New Pet" and "Edit Pet" forms are very similar, so we'll refactor them into
 
 The only real difference between our two forms are the h2 headings and how the state is initialized.
 
-We'll retain the EditPetModal and NewPetModal files since they return a modal but we'll use the same form for both.
+We'll retain the `EditPetModal` and `NewPetModal` files since they return a modal but we'll use the same form for both.
 
 - make a file called `PetForm.js`, import React and create a component
 
 Copy the _form only_ from edit pet modal:
 
 ```js
-import React from "react";
-
 const PetForm = () => {
   return (
     <form className="pet-form" onSubmit={submit}>
@@ -1183,7 +1204,7 @@ const PetForm = () => {
 export default PetForm;
 ```
 
-Handle the case when pet is undefined in PetForm by creating an initialPet object that will be used in the event that there is no pet prop.
+Handle the case when pet is undefined in PetForm by creating an `initialPet` object that will be used in the event that there is no pet prop.
 
 ```js
 const PetForm = ({ pet, onSave, onCancel }) => {
@@ -1200,7 +1221,7 @@ const PetForm = ({ pet, onSave, onCancel }) => {
 Add the react hooks and the necessary updatePhoto and submit functions:
 
 ```js
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 
 const PetForm = ({ pet, onSave, onCancel }) => {
   const initialPet = pet || {
@@ -1283,7 +1304,6 @@ Now we can edit the two modals to import and use the unified form.
 EditPetModal.js:
 
 ```js
-import React from "react";
 import Modal from "react-modal";
 import PetForm from "./PetForm";
 
@@ -1304,7 +1324,6 @@ Test editing a pet.
 NewPetModal.js:
 
 ```js
-import React from "react";
 import Modal from "react-modal";
 import PetForm from "./PetForm";
 
