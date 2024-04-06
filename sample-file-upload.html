@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>File upload example</title>
+    <style>
+      div {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <form>
+      <div>
+        <label for="file">Choose file to upload</label>
+        <input
+          type="file"
+          id="image_uploads"
+          name="image_uploads"
+          accept=".jpg, .jpeg, .png"
+          multiple
+        />
+      </div>
+      <div class="preview">
+        <p>No files currently selected for upload</p>
+      </div>
+      <div>
+        <button>Submit</button>
+      </div>
+    </form>
+    <script>
+      var input = document.querySelector("input");
+      var form = document.querySelector("form");
+      var preview = document.querySelector(".preview");
+
+      // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
+      const fileTypes = [
+        "image/apng",
+        "image/bmp",
+        "image/gif",
+        "image/jpeg",
+        "image/pjpeg",
+        "image/png",
+        "image/svg+xml",
+        "image/tiff",
+        "image/webp",
+        "image/x-icon",
+      ];
+
+      function validFileType(file) {
+        return fileTypes.includes(file.type);
+      }
+
+      function handleSubmit(event) {
+        event.preventDefault();
+        console.log(input.files);
+      }
+
+      function returnFileSize(number) {
+        if (number < 1024) {
+          return `${number} bytes`;
+        } else if (number >= 1024 && number < 1048576) {
+          return `${(number / 1024).toFixed(1)} KB`;
+        } else if (number >= 1048576) {
+          return `${(number / 1048576).toFixed(1)} MB`;
+        }
+      }
+
+      function updateImageDisplay() {
+        while (preview.firstChild) {
+          preview.removeChild(preview.firstChild);
+        }
+
+        const curFiles = input.files;
+        if (curFiles.length === 0) {
+          const para = document.createElement("p");
+          para.textContent = "No files currently selected for upload";
+          preview.appendChild(para);
+        } else {
+          const list = document.createElement("ol");
+          preview.appendChild(list);
+
+          for (const file of curFiles) {
+            const listItem = document.createElement("li");
+            const para = document.createElement("p");
+            if (validFileType(file)) {
+              para.textContent = `File name ${
+                file.name
+              }, file size ${returnFileSize(file.size)}.`;
+              const image = document.createElement("img");
+              image.src = URL.createObjectURL(file);
+              image.alt = image.title = file.name;
+
+              listItem.appendChild(image);
+              listItem.appendChild(para);
+            } else {
+              para.textContent = `File name ${file.name}: Not a valid file type. Update your selection.`;
+              listItem.appendChild(para);
+            }
+
+            list.appendChild(listItem);
+          }
+        }
+      }
+
+      form.addEventListener("submit", handleSubmit);
+      input.addEventListener("change", updateImageDisplay);
+    </script>
+  </body>
+</html>

@@ -3,19 +3,45 @@ import { createRoot } from "react-dom/client";
 import Modal from "react-modal";
 import { Pet } from "./Pet";
 import NewPetModal from "./NewPetModal";
-import { listPets, createPet } from "./api";
+import { listPets, createPet, updatePet, deletePet } from "./api";
+import EditPetModal from "./EditPetModal";
 import "./index.css";
 
 const App = () => {
   const [pets, setPets] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [isNewPetOpen, setNewPetOpen] = useState(false);
+  const [currentPet, setCurrentPet] = useState(null);
+
+  // function closeModal() {
+  //   setNewPetOpen(false);
+  // }
 
   const addPet = async (pet) => {
     return createPet(pet).then((newPet) => {
       setPets([...pets, newPet]);
       setNewPetOpen(false);
     });
+  };
+
+  const savePet = async (pet) => {
+    return updatePet(pet).then((updatedPet) => {
+      setPets((pets) =>
+        pets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
+      );
+      setCurrentPet(null);
+    });
+  };
+
+  const removePet = (byePet) => {
+    const result = window.confirm(
+      `Are you sure you want to adopt ${byePet.name}`
+    );
+    if (result) {
+      deletePet(byePet).then(() => {
+        setPets((pets) => pets.filter((pet) => pet.id !== byePet.id));
+      });
+    }
   };
 
   useEffect(() => {
@@ -35,7 +61,14 @@ const App = () => {
           <ul>
             {pets.map((pet) => (
               <li key={pet.id}>
-                <Pet pet={pet} />
+                <Pet
+                  onRemove={() => removePet(pet)}
+                  pet={pet}
+                  onEdit={() => {
+                    console.log("pet", pet);
+                    setCurrentPet(pet);
+                  }}
+                />
               </li>
             ))}
           </ul>
@@ -49,6 +82,14 @@ const App = () => {
           onCancel={() => setNewPetOpen(false)}
         />
       )}
+
+      {currentPet && (
+        <EditPetModal
+          pet={currentPet}
+          onCancel={() => setCurrentPet(null)}
+          onSave={savePet}
+        />
+      )}
     </main>
   );
 };
@@ -57,7 +98,3 @@ const container = document.getElementById("app");
 Modal.setAppElement(container);
 const root = createRoot(container);
 root.render(<App />);
-
-// const container = document.getElementById("app");
-// Modal.setAppElement(container);
-// ReactDOM.render(<App />, el);

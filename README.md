@@ -1,5 +1,9 @@
 # React and CRUD APIs
 
+## Homework
+
+Listen to this episode of [Syntax](https://syntax.fm/show/751/ui-components-shadcn-tailwind-ui-headless-react-aria-radix-ui), select a modal from one of the UI libraries mentioned and implement it in the project replacing the React Modal currently in use.
+
 ## Starter
 
 This is a CRApp (Create React App) project using [JSON Server](https://www.npmjs.com/package/json-server) for the backend.
@@ -282,14 +286,14 @@ We are already using the pet prop - `{ pet, onEdit, onRemove }` - onEdit and onR
 
 ## Using React Utilities: react-modal
 
-When we click the Add a Pet button, we'll open a modal with a form that will let the user create a new pet.
+When we click the Add a Pet button, we'll open a [React modal](https://www.npmjs.com/package/react-modal) with a form that will let the user create a new pet.
 
 ```sh
 npm i react-modal
 ```
 
 - import it as Modal in index.js: `import Modal from 'react-modal';`
-- add it to the bottom of the main element:
+- add it before the close of the main element in `index.js`:
 
 ```js
 <main>
@@ -298,7 +302,7 @@ npm i react-modal
 </main>
 ```
 
-The modal requires a prop called isOpen to tell it whether to display or not.
+The modal requires a prop to tell it whether to display or not.
 
 We'll add state in index.js:
 
@@ -456,6 +460,8 @@ export default NewPetModal;
 Note: you can enter details but the submit button just refreshes the page (the default action for forms).
 
 ## Add a Photo
+
+In order to [upload files](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file) we use `<input type='file' />`. The selected files' are returned by the element's HTMLInputElement.files property, which is a FileList object containing a list of File objects. The FileList behaves like an array, so you can check its length property to get the number of selected files.
 
 To be able to get the selected file out of an input we must to use a [ref](https://reactjs.org/docs/hooks-reference.html#useref) because file inputs can't be [controlled inputs](https://reactjs.org/docs/forms.html). File uploads must be [uncontrolled inputs](https://reactjs.org/docs/uncontrolled-components.html).
 
@@ -875,6 +881,8 @@ We're going to need:
 
 Add a new piece of state in App (index.js) that will store the current pet:
 
+<!-- // here -->
+
 ```js
 const [currentPet, setCurrentPet] = useState(null);
 ```
@@ -915,7 +923,7 @@ const [photo, setPhoto] = useState(pet.photo);
 And accept a pet prop `const EditPetModal = ({ pet, onCancel, onSave }) =>` and edit the submit function to spread the pet's values into the object before adding any changed values. Without this we would not get the pet's id (which we are not changing).
 
 ```js
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import Modal from "react-modal";
 
 const EditPetModal = ({ pet, onCancel, onSave }) => {
@@ -1030,7 +1038,7 @@ const savePet = async (pet) => {
 
 Test by clicking on a pet, changing a value and examining the console.
 
-We'll need an update function in our api.js:
+We'll need an `update` function in our api.js:
 
 `import { listPets, createPet, updatePet } from './api';`
 
@@ -1090,7 +1098,7 @@ import { listPets, createPet, updatePet, deletePet } from "./api";
 
 And wire up a handler for the home button to call our delete pet API.
 
-The Pet component should be passed an onRemove prop: `const Pet = ({ pet, onEdit, onRemove }) => {`
+The Pet component should be passed an `onRemove` prop: `const Pet = ({ pet, onEdit, onRemove }) => {`
 
 In index, we pass a prop to Pet called onRemove.
 
@@ -1139,15 +1147,13 @@ The "New Pet" and "Edit Pet" forms are very similar, so we'll refactor them into
 
 The only real difference between our two forms are the h2 headings and how the state is initialized.
 
-We'll retain the EditPetModal and NewPetModal files since they return a modal but we'll use the same form for both.
+We'll retain the `EditPetModal` and `NewPetModal` files since they return a modal but we'll use the same form for both.
 
 - make a file called `PetForm.js`, import React and create a component
 
 Copy the _form only_ from edit pet modal:
 
 ```js
-import React from "react";
-
 const PetForm = () => {
   return (
     <form className="pet-form" onSubmit={submit}>
@@ -1186,7 +1192,7 @@ const PetForm = () => {
 export default PetForm;
 ```
 
-Handle the case when pet is undefined in PetForm by creating an initialPet object that will be used in the event that there is no pet prop.
+Handle the case when pet is undefined in PetForm by creating an `initialPet` object that will be used in the event that there is no pet prop.
 
 ```js
 const PetForm = ({ pet, onSave, onCancel }) => {
@@ -1203,7 +1209,7 @@ const PetForm = ({ pet, onSave, onCancel }) => {
 Add the react hooks and the necessary updatePhoto and submit functions:
 
 ```js
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 
 const PetForm = ({ pet, onSave, onCancel }) => {
   const initialPet = pet || {
@@ -1286,7 +1292,6 @@ Now we can edit the two modals to import and use the unified form.
 EditPetModal.js:
 
 ```js
-import React from "react";
 import Modal from "react-modal";
 import PetForm from "./PetForm";
 
@@ -1307,7 +1312,6 @@ Test editing a pet.
 NewPetModal.js:
 
 ```js
-import React from "react";
 import Modal from "react-modal";
 import PetForm from "./PetForm";
 
