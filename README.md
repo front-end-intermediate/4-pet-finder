@@ -31,8 +31,9 @@ Test the frontend endpoint:
 
 ```js
 // import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 ...
-const container = document.getElementById("app");
+const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<App />);
 ```
@@ -46,7 +47,7 @@ In index.js:
 - import the useEffect and useState hooks from React - `import React, { useEffect, useState } from "react";`
 - initialize our pets state to an empty array - `const [pets, setPets] = useState([]);`
 - useEffect runs after our component renders
-- calling setPets is going to trigger a rerender, and we should see our stringified data
+- calling setPets is going to trigger a re-render, and we should see our stringified data
 
 ```js
 import { useEffect, useState } from "react";
@@ -71,7 +72,7 @@ const App = () => {
   );
 };
 
-const container = document.getElementById("app");
+const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<App />);
 ```
@@ -199,7 +200,7 @@ useEffect(() => {
 }, []);
 ```
 
-To see how this might work for promises, comment out the async-await version and use a promise version.
+Here is a quick comparison with the earlier non- async-await:
 
 ```js
 import React, { useState, useEffect } from "react";
@@ -258,7 +259,9 @@ const App = () => {
 ReactDOM.render(<App />, document.querySelector("#root"));
 ```
 
-## Elaborate on the Pets Component
+In daily work I tend to use both versions.
+
+## Elaborate on the Pet Component
 
 ```js
 export const Pet = ({ pet, onEdit, onRemove }) => {
@@ -707,7 +710,7 @@ useEffect(() => {
 }, []);
 ```
 
-Add error handling to the api code:
+Add error handling to `api.js`:
 
 ```js
 const handleErrors = (res) => {
@@ -892,8 +895,6 @@ We're going to need:
 - a new API call to be able to save that pet to the server
 
 Add a new piece of state in App (index.js) that will store the current pet:
-
-<!-- // here -->
 
 ```js
 const [currentPet, setCurrentPet] = useState(null);
