@@ -31,8 +31,9 @@ Test the frontend endpoint:
 
 ```js
 // import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 ...
-const container = document.getElementById("app");
+const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<App />);
 ```
@@ -46,7 +47,7 @@ In index.js:
 - import the useEffect and useState hooks from React - `import React, { useEffect, useState } from "react";`
 - initialize our pets state to an empty array - `const [pets, setPets] = useState([]);`
 - useEffect runs after our component renders
-- calling setPets is going to trigger a rerender, and we should see our stringified data
+- calling setPets is going to trigger a re-render, and we should see our stringified data
 
 ```js
 import { useEffect, useState } from "react";
@@ -71,7 +72,7 @@ const App = () => {
   );
 };
 
-const container = document.getElementById("app");
+const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<App />);
 ```
@@ -199,66 +200,7 @@ useEffect(() => {
 }, []);
 ```
 
-To see how this might work for promises, comment out the async-await version and use a promise version.
-
-```js
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import { Pet } from "./Pet";
-import "./index.css";
-
-const App = () => {
-  const [pets, setPets] = useState([]);
-  const [isLoading, setLoading] = useState(false);
-
-  useEffect(() => {
-    // async function getData() {
-    //   setLoading(true);
-    //   try {
-    //     const res = await fetch(
-    //       'http://localhost:3001/pets'
-    //     );
-    //     const pets = await res.json();
-    //     setPets(pets);
-    //     setLoading(false);
-    //   } catch (e) {
-    //     setLoading(false);
-    //   }
-    // }
-    // getData();
-
-    setLoading(true);
-    fetch("http://localhost:3001/pets")
-      .then((res) => res.json())
-      .then((pets) => setPets(pets))
-      .finally(() => setLoading(false));
-  }, []);
-
-  return (
-    <main>
-      <h1>Adopt-a-Pet</h1>
-      {isLoading ? (
-        <div className="loading">Loading...</div>
-      ) : (
-        <>
-          <ul>
-            {pets.map((pet) => (
-              <li key={pet.id}>
-                <Pet pet={pet} />
-              </li>
-            ))}
-          </ul>
-          <button>Add a Pet</button>
-        </>
-      )}
-    </main>
-  );
-};
-
-ReactDOM.render(<App />, document.querySelector("#root"));
-```
-
-## Elaborate on the Pets Component
+## Elaborate on the Pet Component
 
 ```js
 export const Pet = ({ pet, onEdit, onRemove }) => {
@@ -707,7 +649,7 @@ useEffect(() => {
 }, []);
 ```
 
-Add error handling to the api code:
+Add error handling to `api.js`:
 
 ```js
 const handleErrors = (res) => {
@@ -892,8 +834,6 @@ We're going to need:
 - a new API call to be able to save that pet to the server
 
 Add a new piece of state in App (index.js) that will store the current pet:
-
-<!-- // here -->
 
 ```js
 const [currentPet, setCurrentPet] = useState(null);
