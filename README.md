@@ -14,7 +14,12 @@ This is a CRApp (Create React App) project using [JSON Server](https://www.npmjs
 npm i
 npm i json-server@0.17.4
 node server.js
-npm run start // NB in a separate terminal tab
+```
+
+In a separate terminal tab
+
+```js
+npm run start
 ```
 
 (Note: we use the last version of json-server before the release of version 1-alpha due to pre-release bugs.)
@@ -29,10 +34,13 @@ Test the frontend endpoint:
 
 - http://localhost:3000/
 
+Note: due to a limitation in Create React App it may be useful to change the way the app is initialized.
+
 ```js
-// import ReactDOM from "react-dom";
-import { createRoot } from "react-dom/client";
+// import ReactDOM from "react-dom"; // Remove this
+import { createRoot } from "react-dom/client"; // add this
 ...
+// at the bottom of the page
 const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<App />);
@@ -99,9 +107,9 @@ useEffect(() => {
 
 ## Create a Pet Component
 
-```js
-import React from "react";
+In `src` create `Pet.js`:
 
+```js
 export const Pet = ({ pet }) => {
   return (
     <div>
@@ -138,7 +146,9 @@ We'll add a loading indicator.
 
 Create a new piece of state called loading initialized to value of false
 
-`const [isLoading, setLoading] = useState(false);`
+```js
+const [isLoading, setLoading] = useState(false);
+```
 
 And set loading to true before we start fetching data, and to false after we're done:
 
@@ -155,7 +165,7 @@ useEffect(() => {
 }, []);
 ```
 
-Use the loading state in the return:
+Use a ternary expression in the return value to return a "Loading..." message:
 
 ```js
 return (
@@ -200,11 +210,11 @@ useEffect(() => {
 }, []);
 ```
 
-Here is a quick comparison with the earlier non- async-await:
+Here is a quick comparison with the earlier non-async-await:
 
 ```js
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
+import { useEffect, useState } from "react";
+import { createRoot } from "react-dom/client";
 import { Pet } from "./Pet";
 import "./index.css";
 
@@ -216,22 +226,29 @@ const App = () => {
     // async function getData() {
     //   setLoading(true);
     //   try {
-    //     const res = await fetch(
-    //       'http://localhost:3001/pets'
-    //     );
+    //     const res = await fetch("http://localhost:3001/pets");
     //     const pets = await res.json();
     //     setPets(pets);
     //     setLoading(false);
-    //   } catch (e) {
+    //   } catch (err) {
     //     setLoading(false);
+    //     console.error(err)
     //   }
     // }
     // getData();
 
     setLoading(true);
     fetch("http://localhost:3001/pets")
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject(res);
+        }
+      })
       .then((res) => res.json())
       .then((pets) => setPets(pets))
+      .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);
 
@@ -256,7 +273,9 @@ const App = () => {
   );
 };
 
-ReactDOM.render(<App />, document.querySelector("#root"));
+const container = document.getElementById("root");
+const root = createRoot(container);
+root.render(<App />);
 ```
 
 In daily work I tend to use both versions.
@@ -287,7 +306,9 @@ export const Pet = ({ pet, onEdit, onRemove }) => {
 };
 ```
 
-We are already using the pet prop - `{ pet, onEdit, onRemove }` - onEdit and onRemove are for functions that we will write later.
+We are already using the pet prop - `{ pet, onEdit, onRemove }` - the additional props, `onEdit` and `onRemove`, are for functions that we will write later.
+
+Note the use of aria `role` and `label` to make the emoji-based button ADA compliant.
 
 ## Using React Utilities: react-modal
 
@@ -297,7 +318,12 @@ When we click the Add a Pet button, we'll open a [React modal](https://www.npmjs
 npm i react-modal
 ```
 
-- import it as Modal in index.js: `import Modal from 'react-modal';`
+- import it as Modal in `index.js`:
+
+```js
+import Modal from "react-modal";
+```
+
 - add it before the close of the main element in `index.js`:
 
 ```js
@@ -337,12 +363,12 @@ function closeModal() {
   setNewPetOpen(false);
 }
 ...
-<Modal isOpen={isNewPetOpen} onRequestClose={closeModal}>
+<Modal isOpen={isNewPetOpen} onRequestClose={closeModal}>hello</Modal>
 ```
 
 Now when we click the button the modal shows up, but we have no way to close it.
 
-Pass another prop to the modal called onRequestClose with a function that will call setNewPetOpen to false.
+Pass another prop to the modal called `onRequestClose` with a function that will call setNewPetOpen to false.
 
 ```js
 <Modal isOpen={isNewPetOpen} onRequestClose={() => setNewPetOpen(false)}>
@@ -352,12 +378,16 @@ Pass another prop to the modal called onRequestClose with a function that will c
 
 Note the [React Modal](https://www.npmjs.com/package/react-modal) error in the console.
 
-`Modal.setAppElement("#root" );`
-
-or:
+Correct it by adding the suggested `setAppElement` method:
 
 ```js
-const container = document.getElementById("app");
+Modal.setAppElement("#root");
+```
+
+as shown:
+
+```js
+const container = document.getElementById("root");
 Modal.setAppElement(container);
 const root = createRoot(container);
 root.render(<App />);
@@ -370,7 +400,6 @@ We need a form to input the pet's data inside the modal dialog.
 Create `NewPetModal.js` in `src`:
 
 ```js
-import React from "react";
 import Modal from "react-modal";
 
 const NewPetModal = () => {
@@ -405,7 +434,6 @@ We are using the [Logical AND](https://developer.mozilla.org/en-US/docs/Web/Java
 we can now destructure the onCancel prop and use it in our modal:
 
 ```js
-import React from "react";
 import Modal from "react-modal";
 
 const NewPetModal = ({ onCancel }) => {
