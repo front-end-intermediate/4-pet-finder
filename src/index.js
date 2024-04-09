@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
+import Modal from "react-modal";
+import NewPetModal from "./NewPetModal";
 import { Pet } from "./Pet";
 import "./index.css";
 
 const App = () => {
   const [pets, setPets] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [isNewPetOpen, setNewPetOpen] = useState(false);
 
   useEffect(() => {
     async function getData() {
@@ -15,7 +18,8 @@ const App = () => {
         const pets = await res.json();
         setPets(pets);
         setLoading(false);
-      } catch (e) {
+      } catch (err) {
+        console.warn(err);
         setLoading(false);
       }
     }
@@ -36,13 +40,18 @@ const App = () => {
               </li>
             ))}
           </ul>
-          <button>Add a Pet</button>
+          <button onClick={() => setNewPetOpen(true)}>Add a Pet</button>
         </>
       )}
+      <NewPetModal
+        isOpen={isNewPetOpen}
+        onCancel={() => setNewPetOpen(false)}
+      />
     </main>
   );
 };
 
 const container = document.getElementById("root");
+Modal.setAppElement(container);
 const root = createRoot(container);
 root.render(<App />);
