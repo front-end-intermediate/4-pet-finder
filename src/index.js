@@ -43,10 +43,13 @@ const App = () => {
           <button onClick={() => setNewPetOpen(true)}>Add a Pet</button>
         </>
       )}
-      <NewPetModal
-        isOpen={isNewPetOpen}
-        onCancel={() => setNewPetOpen(false)}
-      />
+
+      {isNewPetOpen && (
+        <NewPetModal
+          isOpen={isNewPetOpen}
+          onCancel={() => setNewPetOpen(false)}
+        />
+      )}
     </main>
   );
 };
