@@ -5,6 +5,7 @@ const NewPetModal = ({ isOpen, onCancel, onSave }) => {
   const [name, setName] = useState("");
   const [kind, setKind] = useState("");
   const [photo, setPhoto] = useState(null);
+  const [errors, setErrors] = useState(null);
   const photoInput = useRef();
 
   const submit = (event) => {
@@ -13,6 +14,9 @@ const NewPetModal = ({ isOpen, onCancel, onSave }) => {
       name,
       kind,
       photo,
+    }).catch((error) => {
+      console.error(error);
+      setErrors(error);
     });
   };
 
@@ -41,6 +45,8 @@ const NewPetModal = ({ isOpen, onCancel, onSave }) => {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+        {errors && errors.name && <div className="error">{errors.name}</div>}
+
         <label htmlFor="kind">Kind</label>
         <select
           name="kind"
@@ -52,6 +58,8 @@ const NewPetModal = ({ isOpen, onCancel, onSave }) => {
           <option value="cat">Cat</option>
           <option value="dog">Dog</option>
         </select>
+        {errors && errors.kind && <div className="error">{errors.kind}</div>}
+
         <button type="button" onClick={onCancel}>
           Cancel
         </button>
