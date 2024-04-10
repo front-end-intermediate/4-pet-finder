@@ -1,10 +1,11 @@
 import { useState, useRef } from "react";
 import Modal from "react-modal";
 
-const NewPetModal = ({ onCancel, onSave }) => {
-  const [name, setName] = useState("");
-  const [kind, setKind] = useState("");
-  const [photo, setPhoto] = useState(null);
+const EditPetModal = ({ pet, onCancel, onSave }) => {
+  const [name, setName] = useState(pet.name);
+  const [kind, setKind] = useState(pet.kind);
+  const [photo, setPhoto] = useState(pet.photo);
+
   const [errors, setErrors] = useState(null);
   const [saving, setSaving] = useState(false);
   const photoInput = useRef();
@@ -13,6 +14,7 @@ const NewPetModal = ({ onCancel, onSave }) => {
     event.preventDefault();
     setSaving(true);
     onSave({
+      ...pet,
       name,
       kind,
       photo,
@@ -35,7 +37,7 @@ const NewPetModal = ({ onCancel, onSave }) => {
 
   return (
     <Modal isOpen={true} onRequestClose={onCancel}>
-      <h2>New Pet</h2>
+      <h2>Edit Pet</h2>
       <form className="pet-form" onSubmit={submit}>
         {photo && <img alt="the pet" src={photo} />}
         <label htmlFor="photo">Photo</label>
@@ -74,4 +76,4 @@ const NewPetModal = ({ onCancel, onSave }) => {
   );
 };
 
-export default NewPetModal;
+export default EditPetModal;
