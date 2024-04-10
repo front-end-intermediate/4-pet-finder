@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import Modal from "react-modal";
 
-const NewPetModal = ({ isOpen, onCancel }) => {
+const NewPetModal = ({ isOpen, onCancel, onSave }) => {
   const [name, setName] = useState("");
   const [kind, setKind] = useState("");
   const [photo, setPhoto] = useState(null);
@@ -9,6 +9,11 @@ const NewPetModal = ({ isOpen, onCancel }) => {
 
   const submit = (event) => {
     event.preventDefault();
+    onSave({
+      name,
+      kind,
+      photo,
+    });
   };
 
   const updatePhoto = () => {
@@ -22,7 +27,7 @@ const NewPetModal = ({ isOpen, onCancel }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onCancel}>
+    <Modal isOpen={true} onRequestClose={onCancel}>
       <h2>New Pet</h2>
       <form className="pet-form" onSubmit={submit}>
         {photo && <img alt="the pet" src={photo} />}
